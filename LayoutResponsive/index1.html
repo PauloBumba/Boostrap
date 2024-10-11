@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>BarberGO - Sistema de Agendamento</title>
+    <style>
+        /* Estilos Gerais */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1A1A1A; /* Preto Fosco */
+            color: #E5E5D8; /* Branco Amarelado */
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #3D3D3D; /* Marrom Escuro */
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        header img {
+            width: 80px; /* Tamanho do logo */
+            height: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #E5E5D8; /* Branco Amarelado */
+            font-size: 1rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #CFC8B5; /* Bege Suave */
+            color: #1A1A1A; /* Preto Fosco */
+        }
+
+        /* Containers das Seções */
+        .container {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #3D3D3D; /* Marrom Escuro */
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Seção Visível Inicial */
+        .active {
+            display: block;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #E5E5D8; /* Branco Amarelado */
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #CFC8B5; /* Bege Suave */
+            border-radius: 5px;
+            background-color: #1A1A1A; /* Preto Fosco */
+            color: #E5E5D8;
+        }
+
+        /* Botão */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #CFC8B5; /* Bege Suave */
+            color: #1A1A1A; /* Preto Fosco */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #E5E5D8; /* Branco Amarelado */
+        }
+
+        /* Seção de Tipos de Corte */
+        .corte-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .corte-item {
+            background-color: #1A1A1A; /* Preto Fosco */
+            border: 1px solid #CFC8B5;
+            border-radius: 10px;
+            width: calc(50% - 10px);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .corte-item:hover {
+            transform: scale(1.05);
+        }
+
+        .corte-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .corte-item h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        /* Estilo de seleção */
+        .selected {
+            border: 2px solid #CFC8B5; /* Destaque na seleção */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05); /* Aumenta o item selecionado */
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <!-- Logotipo -->
+        <img src="Imagem do WhatsApp de 2024-10-05 à(s) 20.22.22_d2056c82.jpg" alt="Logo BarberGO">
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Serviços</a>
+        </nav>
+    </header>
+
+    <!-- Seção 1: Login -->
+    <div class="container active" id="loginSection">
+        <h2>Login</h2>
+        <form>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Digite seu email">
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Digite sua senha">
+            </div>
+            <button type="button" class="btn" onclick="nextSection('scheduleSection')">Entrar</button>
+        </form>
+    </div>
+
+    <!-- Seção 2: Seleção de Horário -->
+    <div class="container" id="scheduleSection">
+        <h2>Selecione um Horário</h2>
+        <form>
+            <div class="form-group">
+                <label for="data">Data do Agendamento</label>
+                <input type="date" id="data" name="data">
+            </div>
+            <div class="form-group">
+                <label for="horario">Horário</label>
+                <input type="text" id="horario" name="horario" placeholder="Ex: 14:00">
+            </div>
+            <button type="button" class="btn" onclick="nextSection('serviceSection')">Próximo</button>
+        </form>
+    </div>
+
+    <!-- Seção 3: Escolha de Serviço -->
+    <div class="container" id="serviceSection">
+        <h2>Escolha o Serviço</h2>
+        <form>
+            <div class="form-group">
+                <label for="servico">Serviço</label>
+                <select id="servico" name="servico" onchange="showCorteOptions()">
+                    <option value="">Selecione um serviço</option>
+                    <option value="corte-cabelo">Corte de Cabelo</option>
+                    <option value="barba">Barba</option>
+                    <option value="cabelo-e-barba">Cabelo e Barba</option>
+                </select>
+            </div>
+            <button type="button" class="btn" onclick="nextSection('corteSection')">Próximo</button>
+        </form>
+    </div>
+
+    <!-- Seção 4: Visualização de Tipos de Corte -->
+    <div class="container" id="corteSection">
+        <h2>Escolha o Tipo de Corte</h2>
+        <div class="corte-grid" id="corteGrid">
+            <!-- Tipos de Corte serão preenchidos dinamicamente -->
+        </div>
+        <button type="button" class="btn" onclick="confirmAgendamento()">Confirmar Agendamento</button>
+    </div>
+
+    <script>
+        let selectedCorte = null; // Armazena o corte selecionado
+        let horarioSelecionado = ''; // Armazena o horário selecionado
+        let dataSelecionada = ''; // Armazena a data selecionada
+
+        // Função para avançar entre seções
+        function nextSection(nextId) {
+            const activeSection = document.querySelector('.container.active');
+            if (activeSection) {
+                activeSection.classList.remove('active');
+                
+                // Armazena os dados da seção anterior
+                if (activeSection.id === 'scheduleSection') {
+                    horarioSelecionado = document.getElementById('horario').value;
+                    dataSelecionada = document.getElementById('data').value;
+                }
+            }
+            document.getElementById(nextId).classList.add('active');
+        }
+
+        // Função para exibir as opções de cortes
+        function showCorteOptions() {
+            const servicoSelecionado = document.getElementById('servico').value;
+            const corteGrid = document.getElementById('corteGrid');
+            corteGrid.innerHTML = ''; // Limpa a grade antes de adicionar novos cortes
+
+            let cortes = [];
+
+            // Define os cortes de acordo com o serviço selecionado
+            if (servicoSelecionado === 'corte-cabelo') {
+                cortes = [
+                    { nome: 'Corte Estilo Francês', imagem: 'francês.jpg' },
+                    { nome: 'Corte Degradê', imagem: 'degrade.jpg' },
+                ];
+            } else if (servicoSelecionado === 'barba') {
+                cortes = [
+                    { nome: 'Barba Estilo Cadiado', imagem: 'cadiado.jpg' },
+                    { nome: 'Barba Americana', imagem: 'americana.jpg' },
+                ];
+            } else if (servicoSelecionado === 'cabelo-e-barba') {
+                cortes = [
+                    { nome: 'Combo Cabelo Estilo Francês e Barba Estilo Cadiado', imagem: 'combo.jpg' },
+                ];
+            }
+
+            // Adiciona os tipos de cortes à grade
+            cortes.forEach(corte => {
+                const item = document.createElement('div');
+                item.classList.add('corte-item');
+                item.innerHTML = `<img src="${corte.imagem}" alt="${corte.nome}">
+                                  <h3>${corte.nome}</h3>`;
+                item.onclick = () => selectCorte(item, corte.nome);
+                corteGrid.appendChild(item);
+            });
+        }
+
+        // Função para selecionar um corte
+        function selectCorte(item, nome) {
+            if (selectedCorte) {
+                selectedCorte.classList.remove('selected'); // Remove a seleção anterior
+            }
+            selectedCorte = item;
+            selectedCorte.classList.add('selected'); // Adiciona a nova seleção
+            console.log(`Corte selecionado: ${nome}`); // Exibe o nome do corte no console
+        }
+
+        // Função para confirmar agendamento
+        function confirmAgendamento() {
+            if (!selectedCorte) {
+                alert("Por favor, selecione um tipo de corte.");
+                return;
+            }
+            const corteSelecionadoNome = selectedCorte.querySelector('h3').textContent;
+            const mensagem = `Agendamento confirmado!\nCorte: ${corteSelecionadoNome}\nData: ${dataSelecionada}\nHora: ${horarioSelecionado}`;
+            alert(mensagem);
+            // Aqui você pode adicionar mais lógica para prosseguir com o agendamento
+        }
+    </script>
+</body>
+</html>
